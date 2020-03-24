@@ -1,0 +1,42 @@
+{% load staticfiles %}
+
+<html>
+<head>
+    <title>Video List</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+</head>
+<body>
+    <div class="container">
+        <a href="{% url 'video:list' %}">Home</a>
+        <h4>1. 문제 입력</h4>
+        <form class="was-validated" method="get" action="{% url 'video:search' %}">
+            <div class="mb-3">
+                <textarea 
+                    class="form-control is-invalid" 
+                    id="validationTextarea"
+                    name="query_text"
+                    placeholder="문제를 입력하세요" 
+                    required>{% if query_text is not None %}{{query_text}}{% endif %}</textarea>
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg btn-block">전송</button>
+        <br>
+        <div>
+        <h4>2. 추천 강의 목록</h4>
+        <ul>
+            {% for video in video_list %}
+                <li>
+                    <a href="/video/{{ video.id }}" target="ytplayer">
+                        <h5>{{ video.title }}</h5>
+                    </a>
+                </li>
+            {% endfor %}
+        </form>
+    </div>
+    <br>
+    <div>
+        <h4>3. 동영상 </h4>
+        <iframe name="ytplayer" width="720" height="405" frameborder="0"></iframe>
+    </div>
+</body>
+</html>
