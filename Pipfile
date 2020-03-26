@@ -9,6 +9,13 @@ autopep8 = "*"
 
 [packages]
 django = "==2.2.11"
+requests = "*"
+google-api-python-client = "*"
+google-auth = "*"
+google-auth-oauthlib = "*"
+google-auth-httplib2 = "*"
+pytube3 = "*"
+konlpy = "*"
 
 [requires]
 python_version = "3.6"

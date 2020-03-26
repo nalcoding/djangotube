@@ -11,24 +11,71 @@
         <a href="{% url 'video:list' %}">Home</a>
         <h4>1. 문제 입력</h4>
         <form class="was-validated" method="get" action="{% url 'video:search' %}">
-            <div class="mb-3">
+            <div class="form-group">
+                <label> 문제 </label>
                 <textarea 
                     class="form-control is-invalid" 
                     id="validationTextarea"
-                    name="query_text"
+                    name="question"
                     placeholder="문제를 입력하세요" 
-                    required>{% if query_text is not None %}{{query_text}}{% endif %}</textarea>
+                    required>{% if question is not None %}{{question}}{% endif %}</textarea>
+            </div>
+            <div class="form-group">
+                <label> 지문 </label>
+                <textarea 
+                    class="form-control is-invalid" 
+                    id="validationTextarea"
+                    name="multiple"
+                    placeholder="지문을 입력하세요" 
+                    required>{% if multiple is not None %}{{multiple}}{% endif %}</textarea>
+            </div>
+            <div class="form-group">
+                <label> 정답 </label>
+                <input 
+                    class="form-control"
+                    type="number"
+                    value="{{answer}}"
+                    name="answer" 
+                    placeholder="정답을 입력하세요" 
+                    min="1"
+                    max="5"
+                    required/>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="subject" id="subject1" value="subject1" 
+                    {% if 'subject1' in subject %}
+                        checked
+                    {% endif %}>
+                <label class="form-check-label" for="subject1">
+                    한국사
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="subject" id="subject2" value="subject2"
+                    {% if 'subject2' in subject %}
+                        checked
+                    {% endif %}>
+                <label class="form-check-label" for="subject2">
+                    정보처리기사
+                </label>
             </div>
             <button type="submit" class="btn btn-primary btn-lg btn-block">전송</button>
         <br>
         <div>
-        <h4>2. 추천 강의 목록</h4>
+        <h4>2. 추천 강의 </h4>
         <ul>
             {% for video in video_list %}
                 <li>
-                    <a href="/video/{{ video.id }}" target="ytplayer">
-                        <h5>{{ video.title }}</h5>
-                    </a>
+                    <h5>
+                        <a href="/video/{{ video.video_key }}/0" target="ytplayer">
+                    {{ video.title }}</a> <p><p> [추천] : 
+                    {% for point in video.points %}
+                        <a href="/video/{{ video.video_key }}/{{point.start}}" target="ytplayer">
+                        {{ point.start }}
+                        </a> ( 정확도 : {{point.predict}}% ),
+                    {% endfor %}
+                    << </h5>
+
                 </li>
             {% endfor %}
         </form>
@@ -36,7 +83,7 @@
     <br>
     <div>
         <h4>3. 동영상 </h4>
-        <iframe name="ytplayer" width="720" height="405" frameborder="0"></iframe>
+        <iframe name="ytplayer" width="720" height="450" frameborder="0"></iframe>
     </div>
 </body>
 </html>
